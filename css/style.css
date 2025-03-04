@@ -1,0 +1,53 @@
+@font-face {
+    font-family: roboto;
+    src: url(fonts/RobotoCondensed-Light.ttf);
+}
+@font-face {
+    font-family: roboto;
+    src: url(fonts/RobotoCondensed-Bold.ttf);
+    font-weight:bold;
+}
+@font-face {
+    font-family: roboto;
+    src: url(fonts/RobotoCondensed-Light.ttf);
+    font-weight:light;
+}
+/*project stylesheet*/
+body, html{
+    height:100%;
+    width:100%;
+    margin:0;
+    background:lightgray;
+    font-family: roboto;
+}
+#sidebar{
+    z-index:10;
+    width:270px;
+    height:100%;
+    background:lightgray;
+    display:inline-block;
+    position:absolute;
+    color:black;
+    padding-right:15px;
+    padding-left:15px;
+    overflow:scroll;
+}
+#map{
+    width:calc(100% - 300px);
+    height:100%;
+    margin-left:300px;
+    background:#eaf0fa;
+    display:inline-block;
+    border-left:black 2px solid;
+
+}
+.participant{
+    margin-bottom:15px;
+}
+.participant > p{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+#occupation{
+    width:100%;
+}

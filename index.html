@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+            <title></title>
+
+        <!--put your external stylesheet links here-->
+        <!--Bootstrap v5
+        <link rel="stylesheet" href="lib/bootstrap.css">
+        -->
+        <!--Leaflet v1.8 Stylesheet -->
+        <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+        <!--project stylesheet-->
+        <link rel="stylesheet" href="css/style.css">
+
+    </head>
+
+    <body>
+        <div id="sidebar">
+            <h1>Colombian Language Atlas</h1>
+            <div id="filters">
+              <label for="gender">Gender:</label><br>
+              <select class="dropdown" id="gender" name="gender">
+                <option value="all" label="All">All</option>
+              </select> 
+              <br>
+              <label for="age">Age:</label><br>
+              <select class="dropdown" id="age" name="age">
+                <option value="all" label="All">All</option>
+              </select> 
+              <br>
+              <label for="setting">Setting:</label><br>
+              <select class="dropdown" id="setting" name="setting">
+                <option value="all" label="All">All</option>
+              </select> 
+              <br>
+              <label for="occupation">Occupation:</label>
+              <select class="dropdown" id="occupation" name="occupation">
+                <option value="all" label="All">All</option>
+              </select> 
+              <br><br>
+              <button id="reset">Reset</button>
+            </div>
+            <div id="list"></div>
+        </div>
+        <!--put your initial page content here-->
+        <div id="map"></div>
+        <!--put your external script links here-->
+        <!--Bootstrap v5 
+        <link rel="stylesheet" href="lib/bootstrap.js">
+        -->
+        <!--Leaflet v1.8 js-->
+        <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+        <!--add topojson functionality to leaflet-->
+        <script type="text/javascript" src="lib/topojson.js"></script>
+        <!--add topojson functionality to leaflet-->
+        <script type="text/javascript" src="lib/protomaps-leaflet.js"></script>
+        <!--Papa parse-->
+        <script type="text/javascript" src="lib/papaparse.js"></script>
+        <!--Project Javascript Files-->
+        <script type="text/javascript" src="js/main.js"></script>
+    </body>
+</html>
