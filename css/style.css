@@ -14,40 +14,99 @@
 }
 /*project stylesheet*/
 body, html{
-    height:100%;
-    width:100%;
     margin:0;
     background:lightgray;
     font-family: roboto;
 }
+/*database sidebar*/
 #sidebar{
-    z-index:10;
-    width:270px;
-    height:100%;
+    height:100vh;
+    width:100%;
     background:lightgray;
-    display:inline-block;
-    position:absolute;
+    display:block;
     color:black;
     padding-right:15px;
     padding-left:15px;
-    overflow:scroll;
+    overflow-y:scroll;
 }
-#map{
-    width:calc(100% - 300px);
-    height:100%;
-    margin-left:300px;
-    background:#eaf0fa;
+/*database table*/
+tr{
+    border:2px solid black;
+}
+th{
+    border:1px solid gray;
+    max-width: 200px;
+}
+.dropdown{
+    background:none;
+    border:none;
+    width:100%; 
+}
+label{
     display:inline-block;
-    border-left:black 2px solid;
-
 }
-.participant{
-    margin-bottom:15px;
-}
-.participant > p{
-    margin-top:5px;
-    margin-bottom:5px;
-}
-#occupation{
+/*map view*/
+#map{
+    height:100vh;
     width:100%;
+    background:#eaf0fa;
+    border-left:black 2px solid;
+    display:inline-block;
+    border:none;
+}
+/*mobile view*/
+@media screen and (max-width: 768px) {
+    #map-container{
+        height:50vh;
+        padding-left:0;
+    }
+    #sidebar-container{
+        padding-left:0 !important;
+        height:50vh;
+    }
+    #participants-table{
+        height:100%;
+        display:block;
+        overflow-y:scroll;
+    }
+    .container-fluid, .row{
+        height:100vh;
+    }
+    #map{
+        height:50vh;
+        width:100%;
+        position:absolute;
+        top:0;
+    }
+    th{
+        max-width:200px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    #map-container{
+        height:40vh;
+        padding-left:0;
+    }
+    #sidebar-container{
+        padding-left:0 !important;
+        height:60vh;
+    }
+    #participants-table{
+        height:100%;
+        display:block;
+        overflow-y:scroll;
+    }
+    .container-fluid, .row{
+        height:100vh;
+    }
+    #map{
+        height:40vh;
+        width:100vw;
+        position:absolute;
+        top:0;
+    }
+    th{
+        max-width:75px;
+    }
 }

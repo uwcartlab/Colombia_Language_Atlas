@@ -1,4 +1,7 @@
 //project javascript information
+//To do
+//Create filter menu interface for mobile
+//Add full list initially
 (function(){
     //////////////function that allows topojson layers to be loaded///////////////////////
 	L.TopoJSON = L.GeoJSON.extend({  
@@ -15,10 +18,10 @@
         }  
     });
     //active department
-    let department,department_participants;
+    let total_participants = [],department,department_participants,filter = false;
     //create map
     var map = L.map('map',{
-        minZoom:6,
+        minZoom:4,
         maxZoom:8,
         maxBounds:[
             [-4.23,-80.09],
@@ -31,8 +34,9 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     })//.addTo(map);
     getColumbiaData();
-
+    //style basemap data
     function addBackgroundData(){
+        //background country data
         let PAINT_RULES = [
             {
                 dataLayer:"background",
@@ -44,7 +48,9 @@
                 })
             }
         ]
+        //labels
         let LABEL_RULES = [
+        //country labels
             {
                 dataLayer:"country_labels",
                 symbolizer: new protomapsL.CenteredTextSymbolizer({
@@ -56,6 +62,7 @@
                         lineHeight:1.5
                     })
             },
+        //colombian department labels
             {
                 dataLayer:"colombia_labels",
                 symbolizer: new protomapsL.CenteredTextSymbolizer({
@@ -68,16 +75,16 @@
                     })
             }
         ];
-    
-        let url = "data/merged.pmtiles";
-            
+        //url for background data files
+        let url = "data/background_data.pmtiles";
+        //protomaps layers    
         let layers = protomapsL.leafletLayer({
                 url: url,
                 paintRules:PAINT_RULES,
                 labelRules:LABEL_RULES,
                 pane:'overlayPane'
             });
-            
+        //add layers to map
         layers.addTo(map)
     }
     //fetch colombia data
@@ -87,7 +94,7 @@
         .then(data => {
             //filter selection
             //gender, age, setting, occupation
-            let filters= ["all", "all", "all", "all"];
+            let filters= ["all", "all", "all", "all","all"];
             //load language CSV
             fetch("data/colombia_language_data.csv")
                 .then(res => res.text())
@@ -97,38 +104,42 @@
                     header:true
                 }).data;
                 //create filter arrays
-                let occupations = [], genders = [], ages = [], settings = [];
+                let occupations = [], genders = [], ages = [], settings = [], departments = [];
                 //create colombia geojson
                 let colombia = new L.TopoJSON(data,{
-                    onEachFeature:function(feature,layer){
-                        layer.on("click",function(e){
-                            //set selected department as active
-                            department = feature.properties.name
-                            department_participants = feature.properties["participants"];
-                            createParticipantList();
-                        })
-                    },
                     style:function(feature){
                         let participants = [];
-
+                        //add departments to list
+                        if (!departments.includes(feature.properties.name))
+                            departments.push(feature.properties.name)
+                        //style runs before oneachfeature, so we use the style function to populate the filter arrays
                         csv.forEach(function(c){
                             if (feature.properties.name == c.Departments){
+                                //gender array
                                 if (!genders.includes(c.Sex))
                                     genders.push(c.Sex)
+                                //age array
                                 if (!ages.includes(c.Age))
                                     ages.push(c.Age)
+                                //setting array
                                 if (!settings.includes(c["Setting (rural vs urban)"]))
                                     settings.push(c["Setting (rural vs urban)"])
+                                //occupation array
                                 if (!occupations.includes(c.Occupation))
                                     occupations.push(c.Occupation)
-                                
+                                //populate participants list based on selected department
                                 participants.push(c)
+                                total_participants.push(c)
+                                //create initial partiicpant list
+                                let html = createParticipantList(c);
+                                document.querySelector("#participants-table").insertAdjacentHTML("beforeend",html);
                             }
                         })
+                        //create new field in the geojson for the selected participants
                         feature.properties["participants"] = participants;
-                        
+                        //make departments with participants more opaque
                         let fillOpacity = participants.length > 0 ? 0.7:0.3; 
-
+                        //style
                         return {
                             fillColor:"#2d8659",
                             fillOpacity:fillOpacity,
@@ -136,6 +147,17 @@
                             weight:1,
                             pane:"tilePane"
                         }
+                    },
+                    onEachFeature:function(feature,layer){
+                        layer.on("click",function(e){
+                            filter = true;
+                            //set selected department as active
+                            filters[0] = feature.properties.name;
+                            document.querySelector("#department").value = feature.properties.name;
+
+                            filterParticipants();
+                            colombia.setStyle(resetStyle)
+                        })
                     }
                 }).addTo(map);
                 addBackgroundData();
@@ -159,53 +181,75 @@
                     let item =  "<option value='" + elem + "' label='" + elem.charAt(0).toUpperCase() + elem.slice(1) + "'></option>";
                     document.querySelector("#occupation").insertAdjacentHTML("beforeend",item)
                 })
+                //create departments list
+                departments.forEach(function(elem){
+                    let item =  "<option value='" + elem + "' label='" + elem.charAt(0).toUpperCase() + elem.slice(1) + "'></option>";
+                    document.querySelector("#department").insertAdjacentHTML("beforeend",item)
+                })
                 //create participant list
-                function createParticipantList(){
-                    document.querySelector("#list").innerHTML = "";
-                    let html = "<h1>" + department + "</h1>", current_participants = 0;
-                    if (department_participants){
-                        department_participants.forEach(function(b){
-                        
-                            if((filters[0] == b["Sex"] || filters[0] == 'all')&&
-                                (filters[1] == b["Age"] || filters[1] == 'all')&&
-                                (filters[2] == b["Setting (rural vs urban)"] || filters[2] == 'all')&&
-                                (filters[3] == b["Occupation"] || filters[3] == 'all')){
-    
-                                current_participants++;
-                                if (b["Participation ID"])
-                                    html += "<div class='participant'><p>" + b["Participation ID"] + "</p>";
-    
-                                html += "<p>" + b["City"] + "</p>";
-                                html += "<p>Age: " + b["Age"] + "</p>";
-                                html += "<p>Gender: " + b["Sex"] + "</p>";
-                                html += "<p>Occupation: " + b["Occupation"] + "</p>";
-                                html += "<p>Setting: " + b["Setting (rural vs urban)"] + "</p></div>";
-                            }
-                        })
-                    }    
-                    if (current_participants == 0)
-                        html += "<p>No participants found.</p>" 
+                function createParticipantList(b){
+                    let html = "";
                     
-                    document.querySelector("#list").insertAdjacentHTML("beforeend",html);
+                    //if (b["Participation ID"])
+                    //    html += "<tr class='participant'><th class='id'>" + b["Participation ID"] + "</th>";
+
+                    html += "<th class='city part-row'>" + b["City"] + "</th>";
+                    html += "<th class='age part-row'>" + b["Age"] + "</th>";
+                    html += "<th class='gender part-row'>" + b["Sex"] + "</th>";
+                    html += "<th class='setting part-row'>" + b["Setting (rural vs urban)"] + "</th>";
+                    html += "<th class='occupation part-row'>" + b["Occupation"] + "</th></tr>";
+
+                    return html;
                 }
-                //create filters 
+                //filter participant list
+                function filterParticipants(){
+                    console.log(filters)
+                    //get list element from the sidebar
+                    document.querySelectorAll(".part-row").forEach(function(elem){
+                        elem.remove();
+                    });
+                    let html = "", current_participants = 0;
+                    total_participants.forEach(function(b){
+                        if((filters[2] == b["Sex"] || filters[2] == 'all')&&
+                            (filters[1] == b["Age"] || filters[1] == 'all')&&
+                            (filters[3] == b["Setting (rural vs urban)"] || filters[3] == 'all')&&
+                            (filters[4] == b["Occupation"] || filters[4] == 'all')&&
+                            (filters[0] == b["Departments"] || filters[0] == 'all')){
+                            current_participants++;
+                            html += createParticipantList(b);
+                        }
+                    })
+
+                    if (current_participants == 0)
+                        html += "<p id='none'>No participants found.</p>" 
+                                        
+                    document.querySelector("#participants-table").insertAdjacentHTML("beforeend",html);
+                }
+                //create dropown filters for demographics
                 document.querySelectorAll(".dropdown").forEach(function(elem,i){
                     elem.addEventListener("change",function(e){                        
                         filters[i] = e.target.value;
-                        if (department)
-                            createParticipantList();  
+                        filter = true;
+                        //if (department)
+                        filterParticipants();  
                         
                         colombia.setStyle(resetStyle)
                     })
                 })
                 //reset button
                 document.querySelector("#reset").addEventListener("click",function(elem){
-                    document.querySelector("#list").innerHTML = "";
+                    document.querySelectorAll(".part-row").forEach(function(elem){
+                        elem.remove();
+                    });
+                    if (document.querySelector("#none"))
+                        document.querySelector("#none").remove();
+                    
                     department = "";
                     document.querySelectorAll(".dropdown").forEach(function(elem,i){
                         elem.value = "all";
-                        filters = ["all", "all", "all", "all"];
+                        filters = ["all", "all", "all", "all","all"];
                     })
+                    filter = false;
                     colombia.setStyle(resetStyle)
                 })
                 //reset style
@@ -213,11 +257,16 @@
                     let currentFilter = false;
 
                     feature.properties.participants.forEach(function(b){
-                        if((filters[0] == b["Sex"] || filters[0] == 'all')&&
+                        if((filters[2] == b["Sex"] || filters[2] == 'all')&&
                         (filters[1] == b["Age"] || filters[1] == 'all')&&
-                        (filters[2] == b["Setting (rural vs urban)"] || filters[2] == 'all')&&
-                        (filters[3] == b["Occupation"] || filters[3] == 'all')){
+                        (filters[3] == b["Setting (rural vs urban)"] || filters[3] == 'all')&&
+                        (filters[4] == b["Occupation"] || filters[4] == 'all')&&
+                        (filters[0] == b["Departments"] || filters[0] == 'all')){
                             currentFilter = true;
+                        }
+                        if (filter == false){
+                            let html = createParticipantList(b);
+                            document.querySelector("#participants-table").insertAdjacentHTML("beforeend",html);
                         }
                     })
 
