@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+
+  <!--put your external stylesheet links here-->
+  <!--Bootstrap v5-->
+  <link rel="stylesheet" href="lib/bootstrap.min.css">
+  <!--Leaflet v1.8 Stylesheet -->
+  <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+  <!--project stylesheet-->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!--to do-->
+
+</head>
+
+<body>
+  <!--navigation bar-->
+    <nav class="navbar-map">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h1 class="espanol"><img src="img/colombia_outline.png" height="50" style="display:inline">Atlas Lingüístico de Colombia</h1>
+          <h1 class="english"><img src="img/colombia_outline.png" height="50" style="display:inline">Colombia Linguistic Atlas</h1>
+       </a>
+      </div>
+    </nav>
+  <!--container-->
+  <div class="container-fluid">
+    <div class="row">
+      <div id="map-container" class="col-xl-6 col-md-6 col-12">
+        <div id="map"></div>
+      </div>
+      <div id="sidebar-container" class="col-xl-6 col-md-6 col-12">
+        <div id="sidebar">
+          <!--<img id="outline" src="img/colombia_outline.png">
+          <h1>Colombia Language Atlas</h1>-->
+          <!--<button id="reset-large-screen" class="reset">Reset</button>-->
+            <table id="participants-table">
+              <tr>
+                <th>
+                  <select class="dropdown" id="department" name="department">
+                    <option value="all" label="Dept.">Place</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="dropdown" id="age" name="age">
+                    <option value="all" label="Age">Age</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="dropdown" id="gender" name="gender">
+                    <option value="all" label="Gender">Gender</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="dropdown" id="setting" name="setting">
+                    <option value="all" label="Setting">Setting</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="dropdown" id="occupation" name="occupation">
+                    <option value="all" label="Job">Job</option>
+                  </select>
+                </th>
+              </tr>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--put your external script links here-->
+  <!--Bootstrap v5  -->
+  <script type="text/javascript" href="lib/bootstrap.bundle.min.js"></script>
+  <!--Leaflet v1.8 js-->
+  <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+  <!--add topojson functionality to leaflet-->
+  <script type="text/javascript" src="lib/topojson.js"></script>
+  <!--add topojson functionality to leaflet-->
+  <script type="text/javascript" src="lib/protomaps-leaflet.js"></script>
+  <!--Papa parse-->
+  <script type="text/javascript" src="lib/papaparse.js"></script>
+  <!--Project Javascript Files-->
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>

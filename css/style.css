@@ -15,19 +15,98 @@
 /*project stylesheet*/
 body, html{
     margin:0;
-    background:lightgray;
+    background:white;
     font-family: roboto;
+}
+/*language buttons*/
+.english{
+    display:none;
+}
+/*Navigation bar*/
+nav{
+    z-index:10000;
+    background:white;
+    border-bottom:2px solid black;  
+    padding:0 !important;
+}
+nav h1{
+    color:black;
+    font-size:40px;
+}
+.navbar-brand{
+    white-space:wrap;
+    margin:auto;
+}
+.navbar-brand img{
+    margin:auto;
+    display:block;
+}
+.navbar-map{
+    height:75px;
+}
+.navbar-brand-map img{
+    display:inline;
+}
+.return{
+    display:inline;
+}
+/*landing page*/
+#language{
+    margin-top:15px;
+    margin-bottom:15px;
+}
+#language-buttons{
+    width:fit-content;
+    margin:auto;
+    display:block;
+}
+#language button{
+    background: white;
+    border: black 2px solid;    
+}   
+.active{
+    background:lightgray !important;
+    font-weight: bold;
+}
+#language p {
+    display:inline;
+    padding-right:25px;
+}
+#to-map{
+    padding:10px;
+    font-size:20px;
+    font-weight:bold;
+    background: white;
+    border: black 3px solid;    
+    display:block;
+    margin:auto;
+}
+#to-map p{
+    margin-bottom:5px;
 }
 /*database sidebar*/
 #sidebar{
-    height:100vh;
+    height:calc(100vh - 75px);
     width:100%;
-    background:lightgray;
+    background:white;
     display:block;
     color:black;
-    padding-right:15px;
-    padding-left:15px;
+    padding:15px;
     overflow-y:scroll;
+}
+h1{
+    text-align: center;
+    font-weight:bold;
+}
+#outline{
+    height:100px;
+    margin:auto;
+    display:block
+}
+#reset{
+    display:block;
+    margin:auto;
+    margin-bottom:10px;
 }
 /*database table*/
 tr{
@@ -36,33 +115,134 @@ tr{
 th{
     border:1px solid gray;
     max-width: 200px;
+    font-weight:normal;
+    padding-bottom:15px;
 }
 .dropdown{
     background:none;
     border:none;
     width:100%; 
+    font-weight:bold;
 }
 label{
     display:inline-block;
 }
+.play-audio{
+    color:blue;
+    text-decoration: underline;
+    padding-bottom:10px;
+    display:block;
+}
+.play-audio:hover{
+    cursor:pointer !important;
+}
+/*audio view*/
+.audio-table{
+    position:absolute;
+    top:15px;
+    width:25%;
+    height:50vh;
+    background:white;
+    display:none;
+    z-index:100000;
+    padding:25px;
+    overflow:scroll;
+    border:2px solid black;
+    right:15px;
+}
+#close-audio{
+  background: rgba(0,0,0,0);
+  color: black;
+  font-size: 24px;
+  border: lightgray 2px solid;
+  font-family: roboto;
+  width: 40px;
+  border: none;
+  float:right;
+}
+#close-audio img{
+    rotate: 270deg;
+}
 /*map view*/
 #map{
-    height:100vh;
+    height:calc(100vh - 75px);
     width:100%;
     background:#eaf0fa;
     border-left:black 2px solid;
     display:inline-block;
     border:none;
 }
+#map-container{
+    padding:0;
+}
+#close{
+    color:#b3b3b3;
+}
+/*zoom buttons*/
+.leaflet-control-zoom-in, .leaflet-control-zoom-out{
+    background:black !important;
+    color:white !important;
+    padding-bottom:5px !important;
+    box-shadow:none !important;  
+}
+.leaflet-control-zoom-in{
+    border-bottom: 1px solid #fff !important;
+}
+/*leaflet attribution*/
+.leaflet-control-attribution{
+    background:black !important;
+    color:white !important;
+    font-family: roboto;
+}
+.leaflet-control-attribution a{
+    color:white !important;
+    text-decoration: underline !important;
+}
+/*map info panel*/
+.info button{
+    background:rgba(0,0,0,0);
+    color:black;
+    font-size:24px;
+    border:lightgray 2px solid;
+    font-family: roboto;
+    width:40px;
+    border:none;
+}
+.info button>img{
+    width:100%;
+}
+/*intro popup*/
+.intro .leaflet-popup-content-wrapper{
+   border:2px black solid;
+   font-size:18px;
+   font-family:roboto;
+   width:250px;
+}
+.leaflet-popup-content {
+    width:220px !important;
+}
+.leaflet-popup-tip{
+    background:black;
+}
+@media screen and (min-width: 768px) {
+    #in, #table-button, #settings{
+        display:none;
+    }
+}
 /*mobile view*/
 @media screen and (max-width: 768px) {
+    .navbar-map{
+        display:none;
+    }
+    #language p {
+        padding-right:15px;
+    }
     #map-container{
-        height:50vh;
-        padding-left:0;
+        height:calc(50vh - 60px);
     }
     #sidebar-container{
         padding-left:0 !important;
-        height:50vh;
+        height:calc(50vh + 60px);
     }
     #participants-table{
         height:100%;
@@ -73,7 +253,8 @@ label{
         height:100vh;
     }
     #map{
-        height:50vh;
+        height:calc(50vh - 60px);
+        margin-top:60px;
         width:100%;
         position:absolute;
         top:0;
@@ -81,32 +262,80 @@ label{
     th{
         max-width:200px;
     }
+    .audio-table{
+        position:absolute;
+        top:0;
+        width:100%;
+        height:50vh;
+        background:white;
+        display:none;
+        z-index:10000;
+        padding:25px;
+        overflow:scroll;
+    }
 }
 
 @media screen and (max-width: 576px) {
+    .navbar-map{
+        display:none;
+    }
+    #reset-large-screen{
+        display:none;
+    }
+    #language p {
+        padding-right:5px;
+    }
     #map-container{
-        height:40vh;
-        padding-left:0;
+        height:100vh;
+    }
+    #map{
+        height:100vh;
+        width:100vw;
+        position:absolute;
+        margin-top:0;
+    }
+    .container-fluid, .row{
+        height: 100vh;
     }
     #sidebar-container{
-        padding-left:0 !important;
-        height:60vh;
+        display:none;
+        position:absolute;
+        bottom:0;
+        padding:0 !important;
+        height:calc(40vh + 60px);
+        width:100vw !important;
+        overflow-x:hidden;
+        z-index:10000;
+    }
+    #sidebar{
+        height:100%;
+        width:100%;
     }
     #participants-table{
         height:100%;
         display:block;
         overflow-y:scroll;
+        overflow-x:hidden;
     }
-    .container-fluid, .row{
-        height:100vh;
-    }
-    #map{
-        height:40vh;
-        width:100vw;
-        position:absolute;
-        top:0;
+    #outline{
+        height:50px;
+        margin:auto;
+        display:block
     }
     th{
         max-width:75px;
+    }
+    .audio-table{
+        position:absolute;
+        top:0;
+        right:0;
+        border:none;
+        width:100%;
+        height:50vh;
+        background:white;
+        display:none;
+        z-index:10000;
+        padding:25px;
+        overflow:scroll;
     }
 }
