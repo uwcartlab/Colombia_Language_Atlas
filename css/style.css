@@ -1,54 +1,77 @@
+
 @font-face {
-    font-family: roboto;
-    src: url(fonts/RobotoCondensed-Light.ttf);
+    font-family: karrik;
+    src: url(fonts/Karrik-Regular.woff2);
 }
 @font-face {
-    font-family: roboto;
-    src: url(fonts/RobotoCondensed-Bold.ttf);
-    font-weight:bold;
-}
-@font-face {
-    font-family: roboto;
-    src: url(fonts/RobotoCondensed-Light.ttf);
-    font-weight:light;
+    font-family: karrik;
+    src: url(fonts/Karrik-Italic.woff2);
+    font-style: italic;
 }
 /*project stylesheet*/
 body, html{
     margin:0;
     background:white;
-    font-family: roboto;
+    font-family: karrik;
 }
 /*language buttons*/
 .english{
     display:none;
 }
 /*Navigation bar*/
-nav{
+#navbar-intro{
     z-index:10000;
     background:white;
     border-bottom:2px solid black;  
     padding:0 !important;
 }
-nav h1{
+.navbar-logo-intro h1{
     color:black;
     font-size:40px;
+    font-variant: small-caps;
 }
-.navbar-brand{
-    white-space:wrap;
-    margin:auto;
-}
-.navbar-brand img{
+.navbar-logo-intro img{
     margin:auto;
     display:block;
+    margin-bottom:10px;
 }
+.navbar-logo-intro{
+    text-decoration: none !important;
+    white-space:wrap;
+    margin:auto;
+    color:black;
+}
+
 .navbar-map{
     height:75px;
 }
-.navbar-brand-map img{
+.navbar-logo-map{
+    text-decoration: none !important;
+}
+.navbar-logo-map img{
     display:inline;
+    vertical-align: middle;
+    margin-right:15px;
+}
+.navbar-logo-map h1{
+    color:black;
+    margin:15px;
+    font-variant: small-caps;
+    font-size:36px;
 }
 .return{
     display:inline;
+}
+/*navbar top*/
+.navbar-top{
+    z-index:10000;
+    background:white;
+    border-bottom:2px solid black;  
+    padding:0 !important;
+    height:60px;
+}
+.navbar-top .container{
+    margin-top:10px;
 }
 /*landing page*/
 #language{
@@ -63,6 +86,8 @@ nav h1{
 #language button{
     background: white;
     border: black 2px solid;    
+    padding:10px;
+    font-size:16px;
 }   
 .active{
     background:lightgray !important;
@@ -83,15 +108,17 @@ nav h1{
 }
 #to-map p{
     margin-bottom:5px;
+    margin-top:5px;
+}
+#intro-container{
+    font-size:20px;
 }
 /*database sidebar*/
 #sidebar{
-    height:calc(100vh - 75px);
-    width:100%;
+    height:calc(100vh - 90px);
     background:white;
     display:block;
     color:black;
-    padding:15px;
     overflow-y:scroll;
 }
 h1{
@@ -155,7 +182,7 @@ label{
   color: black;
   font-size: 24px;
   border: lightgray 2px solid;
-  font-family: roboto;
+  font-family: karrik;
   width: 40px;
   border: none;
   float:right;
@@ -192,7 +219,7 @@ label{
 .leaflet-control-attribution{
     background:black !important;
     color:white !important;
-    font-family: roboto;
+    font-family: karrik;
 }
 .leaflet-control-attribution a{
     color:white !important;
@@ -204,7 +231,7 @@ label{
     color:black;
     font-size:24px;
     border:lightgray 2px solid;
-    font-family: roboto;
+    font-family: karrik;
     width:40px;
     border:none;
 }
@@ -215,68 +242,52 @@ label{
 .intro .leaflet-popup-content-wrapper{
    border:2px black solid;
    font-size:18px;
-   font-family:roboto;
-   width:250px;
+   font-family:karrik;
+   width:280px;
 }
 .leaflet-popup-content {
-    width:220px !important;
+    width:240px !important;
 }
 .leaflet-popup-tip{
     background:black;
 }
+.invert-arrow{
+    filter: invert(1);
+}
+#upper-right{
+    rotate:120deg;
+}
+#down{
+    rotate:270deg;
+}
+#right{
+    rotate:180deg;
+}
 @media screen and (min-width: 768px) {
+    #intro-container{
+        margin-left:20%;
+        width:60%;
+    }
     #in, #table-button, #settings{
         display:none;
     }
-}
-/*mobile view*/
-@media screen and (max-width: 768px) {
-    .navbar-map{
-        display:none;
-    }
-    #language p {
-        padding-right:15px;
-    }
     #map-container{
-        height:calc(50vh - 60px);
+        width:50%;
     }
     #sidebar-container{
-        padding-left:0 !important;
-        height:calc(50vh + 60px);
+        width:50%;
+    }
+    #row{
+        display: flex;
+        flex-wrap: wrap;
+        height: calc(100% - 60px);
     }
     #participants-table{
-        height:100%;
-        display:block;
-        overflow-y:scroll;
-    }
-    .container-fluid, .row{
-        height:100vh;
-    }
-    #map{
-        height:calc(50vh - 60px);
-        margin-top:60px;
         width:100%;
-        position:absolute;
-        top:0;
-    }
-    th{
-        max-width:200px;
-    }
-    .audio-table{
-        position:absolute;
-        top:0;
-        width:100%;
-        height:50vh;
-        background:white;
-        display:none;
-        z-index:10000;
-        padding:25px;
-        overflow:scroll;
     }
 }
-
-@media screen and (max-width: 576px) {
-    .navbar-map{
+@media screen and (max-width: 768px) {
+    .navbar-top{
         display:none;
     }
     #reset-large-screen{
@@ -309,7 +320,8 @@ label{
     }
     #sidebar{
         height:100%;
-        width:100%;
+        width:calc(100% - 10px);
+        padding:5px;
     }
     #participants-table{
         height:100%;
@@ -328,14 +340,18 @@ label{
     .audio-table{
         position:absolute;
         top:0;
+        left:0;
         right:0;
+        padding:0;
         border:none;
         width:100%;
         height:50vh;
         background:white;
         display:none;
         z-index:10000;
-        padding:25px;
         overflow:scroll;
+    }
+    .audio-table > *{
+        padding-left:10px;
     }
 }

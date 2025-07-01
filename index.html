@@ -7,40 +7,34 @@
   <title></title>
 
   <!--put your external stylesheet links here-->
-  <!--Bootstrap v5-->
-  <link rel="stylesheet" href="lib/bootstrap.min.css">
   <!--Leaflet v1.8 Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
   <!--navigation bar-->
-  <nav class="navbar">
+  <div id="navbar-intro">
     <div class="container">
-      <a class="navbar-brand">
+      <a class="navbar-logo-intro">
         <h1 class="espanol">Atlas Lingüístico de Colombia</h1>
         <h1 class="english">Colombia Linguistic Atlas</h1>
         <img src="img/colombia_outline.png" height="50">
      </a>
     </div>
-  </nav>
-  <!--container-->
-  <div class="container-fluid">
-    <div class="row">
-      <div id="intro-container" class="offset-xl-3 col-xl-6 offset-md-3 col-md-6 col-12">
-        <div id="language">
-            <div id="language-buttons">
-                <button id="espanol" class="active language">en Español</button>
-                <button id="english" class="language">in English</button>
-            </div>
-        </div>
-        <p class="espanol">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        <p class="english">"Lorem ipsum dolor sit amet, consectetur adipiempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        <a href="map.html"><button id="to-map"><p class="espanol">Go to Map</p><p class="english">Go to Map</p></button></a>
-    </div>
   </div>
-    <!--Bootstrap v5  -->
-    <script type="text/javascript" href="lib/bootstrap.bundle.min.js"></script>
+  <!--container-->
+  <div class="row">
+    <div id="intro-container">
+      <div id="language">
+          <div id="language-buttons">
+              <button id="espanol" class="active language">en Español</button>
+              <button id="english" class="language">in English</button>
+          </div>
+      </div>
+      <p class="espanol">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+      <p class="english">"Lorem ipsum dolor sit amet, consectetur adipiempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+      <a href="map.html"><button id="to-map"><p class="espanol">Go to Map</p><p class="english">Go to Map</p></button></a>
+  </div>
     <!--Project Javascript Files-->
     <script type="text/javascript" src="js/index.js"></script>
 </body>

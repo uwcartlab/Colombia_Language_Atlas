@@ -24,10 +24,10 @@
     //active department
     let total_participants = [],department = 'none',departments = [], department_participants,filter = false, LABEL_RULES, PAINT_RULES;
     //initial map position
-    let latlng = L.latLng(4.11, -73.76);
+    let latlng = L.latLng(4.13, -73.76);
     //create map
     var map = L.map('map',{
-        minZoom:4,
+        minZoom:5,
         maxZoom:8,
         maxBounds:[
             [-4.23,-80.09],
@@ -36,21 +36,21 @@
     }).setView(latlng, 6);
     //tutorial popup
     let popupContent;
-    if (document.body.offsetWidth <= 576){
+    if (document.body.offsetWidth <= 768){
         if (language == "espanol")
-            popupContent = '<p><img width="20" src="../img/icons/table.svg"> Toque para ver y filtrar la lista de participantes.&#11016;</p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento. &#11015;</p><p id="close">Toque el mapa para cerrar.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Toque para ver y filtrar la lista de participantes.<img id="upper-right" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Toque el mapa para cerrar.</p>';
         if (language == "english")
-            popupContent = '<p><img width="20" src="../img/icons/table.svg"> Tap to view and filter list of participants. &#11016;</p><p>Tap departments on the map to view participants from that department. &#11015;</p><p id="close">Tap map to close.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Tap to view and filter list of participants. <img id="upper-right" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department. <img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Tap map to close.</p>';
     }
     else{
         if (language == "espanol")
-            popupContent = '<p>Utilice la tabla para filtrar la lista de participantes. &#11016;</p><p>Haga clic en los departamentos en el mapa para ver los participantes de ese departamento. &#11015;</p>';
+            popupContent = '<p>Utilice la tabla para filtrar la lista de participantes. <img width="25" id="right" class="invert-arrow" src="../img/icons/arrow.svg"></p><p>Haga clic en los departamentos en el mapa para ver los participantes de ese departamento. <img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p>';
         if (language == "english")
-            popupContent = '<p>Use table to filter list of participants. &#11016;</p><p>Click departments on the map to view participants from that department. &#11015;</p>';
+            popupContent = '<p>Use table to filter list of participants. <img width="25" id="right" class="invert-arrow" src="../img/icons/arrow.svg"></p><p>Click departments on the map to view participants from that department.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p>';
     }
 
     let popup = L.popup({className:"intro"})
-        .setLatLng(latlng)
+        .setLatLng([2.5, -73.76])
         .setContent(popupContent)
         .openOn(map);
     //var popup = L.popup(latlng, {content: '<p>Hello world!<br />This is a nice popup.</p>'})
@@ -66,7 +66,7 @@
     let info = L.control();
     info.onAdd = function(map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-        this._div.innerHTML = '<button id="reset-small-screen" class="reset" style="display:none"><img src="../img/icons/arrow.svg"></button><button id="table-button"><img src="../img/icons/table.svg"></button><button id="in"><a href="index.html"><img src="../img/icons/info.svg"></a></button>';
+        this._div.innerHTML = '<button id="reset-small-screen" class="reset" style="display:none"><img src="../img/icons/arrow.svg"></button><button id="table-button"><img src="../img/icons/person.svg"></button><button id="in"><a href="index.html"><img src="../img/icons/info.svg"></a></button>';
         return this._div;
     };
     info.addTo(map)
@@ -76,17 +76,22 @@
     })
     //function for displaying table on mobile
     function displayTable(condition){
-        if (document.body.offsetWidth <= 576){
+        if (document.body.offsetWidth <= 768){
             let display = document.querySelector("#sidebar-container").style.display;
-            console.log(condition, display)
 
             if (display == 'block')
-                if (condition)
+                if (condition){
                     document.querySelector("#sidebar-container").style.display = 'block';
-                else
+                    document.querySelector("#reset-small-screen").style.display = 'inline';
+                }
+                else{
                     document.querySelector("#sidebar-container").style.display = 'none';
-            else    
+                    document.querySelector("#reset-small-screen").style.display = 'none';
+                }
+            else{  
                 document.querySelector("#sidebar-container").style.display = 'block';
+                document.querySelector("#reset-small-screen").style.display = 'inline';
+            }
         }
 
     }
@@ -121,10 +126,10 @@
                 dataLayer:"country_labels",
                 symbolizer: new protomapsL.CenteredTextSymbolizer({
                         labelProps:["name"],
-                        font: "12px roboto",
-                        fill:"#000000",
+                        font: "12px karrik",
+                        fill:"#737373",
                         stroke:"#ffffff",
-                        width:1,
+                        width:0.5,
                         lineHeight:1.5
                     })
             },
@@ -133,10 +138,10 @@
                 dataLayer:"colombia_labels",
                 symbolizer: new protomapsL.CenteredTextSymbolizer({
                         labelProps:["name"],
-                        font: "bold 12px roboto",
+                        font: departmentFontFilter,
                         fill:departmentColorFilter,
-                        stroke:"#ffffff",
-                        weight:1,
+                        stroke:departmentStrokeFilter,
+                        weight:0.5,
                         width:departmentWidthFilter,
                         lineHeight:1.5,
                         justify:2
@@ -148,9 +153,11 @@
                 dataLayer:"colombia_cities",
                 symbolizer: new protomapsL.OffsetTextSymbolizer({
                         labelProps:["name"],
-                        font: "bold 10px roboto",
+                        font: "14px karrik",
                         fill:cityFilter,
-                        offsetY:-3,
+                        stroke:"#ffffff",
+                        width:widthFilter,
+                        offsetY:-4,
                         lineHeight:1.5
                     })
             }
@@ -162,16 +169,30 @@
             else    
                 return 0;
         }
+        //font filter
+        function departmentFontFilter(x,d){
+            if (departments.includes(d.props.name))
+                return "14px karrik"
+            else    
+                return "12px karrik"
+        }
+        //department stroke
+        function departmentStrokeFilter(x,d){
+            if (departments.includes(d.props.name))
+                return "#000000"
+            else    
+                return "#999999"
+        }
         //filter department labels when selected
         function departmentColorFilter(x,d){
             if (department == "none")
                 if (departments.includes(d.props.name))
-                    return "#000000"
+                    return "#ffffff"
                 else    
-                    return "#cccccc"
+                    return "#e6e6e6"
             else{
                 if (d.props.name == department)
-                    return "#000000";
+                    return "#ffffff";
                 else    
                     return "rgba(0,0,0,0)"
             }  
@@ -179,7 +200,10 @@
         //filter department stroke width
         function departmentWidthFilter(x,d){
             if (department == "none")
-                return 1
+                if (departments.includes(d.props.name))
+                    return 1
+                else    
+                    return 1
             else{
                 if (d.props.name == department)
                     return 1;
@@ -193,6 +217,12 @@
                 return "rgba(0,0,0,1)";
             else    
                 return "rgba(0,0,0,0)";
+        }
+        function widthFilter(x,d){
+            if (d.props.adm1name == department)
+                return 0.75;
+            else    
+                return 0;
         }
 
         //url for background data files
@@ -268,8 +298,8 @@
                         return {
                             fillColor:"#2d8659",
                             fillOpacity:fillOpacity,
-                            color:"white",
-                            weight:1,
+                            color:"#ffffff",
+                            weight:0.5,
                             pane:"tilePane",
                             interactive:interactive
                         }
@@ -324,6 +354,9 @@
                     let filePath = "../audio/" + id + "/";
 
                     document.querySelector("#" + id).addEventListener("click",function(){    
+                        if (document.querySelector(".audio-table"))
+                            document.querySelector(".audio-table").remove();
+                        
                         document.querySelector("body").insertAdjacentHTML("afterbegin","<div class='audio-table'><h2 id='participant'>" + id + "<button id='close-audio'><img src='../img/icons/arrow.svg'></button></h2></div")
                         document.querySelector(".audio-table").style.display = "block";
 
@@ -363,6 +396,10 @@
                     //clear table
                     document.querySelectorAll(".part-row").forEach(function(elem){
                         elem.remove();
+                    });
+                    document.querySelectorAll("tbody").forEach(function(elem, i){
+                        if (i > 0)
+                            elem.remove();
                     });
                     if (document.querySelector("#none"))
                         document.querySelector("#none").remove();
@@ -406,7 +443,12 @@
                 })
                 //reset button function
                 function resetButton(){
-                     //reset table
+                    //clear table
+                    document.querySelectorAll("tbody").forEach(function(elem, i){
+                        if (i > 0)
+                            elem.remove();
+                    }); 
+                    //reset table
                      document.querySelectorAll(".part-row").forEach(function(elem){
                         elem.remove();
                     });
@@ -414,7 +456,7 @@
                         document.querySelector("#none").remove();
                     //if on small screens, set table display to none
                     displayTable(false)
-                    //reset department to defaul
+                    //reset department to defautl
                     department = "none";
                     //reset all filters
                     document.querySelectorAll(".dropdown").forEach(function(elem,i){
@@ -428,8 +470,9 @@
                     //remove reset button
                     document.querySelector("#reset-small-screen").style.display = 'none';
                     //hide table on small screen 
-                    if (document.body.offsetWidth <= 576)
+                    if (document.body.offsetWidth <= 768)
                         document.querySelector("#sidebar-container").style.display = 'none';
+
                 }
                 document.querySelectorAll(".reset").forEach(function(elem){
                     elem.addEventListener("click",function(elem){
