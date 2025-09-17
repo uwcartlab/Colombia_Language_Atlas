@@ -4,7 +4,7 @@
 //Add full list initially
 (function(){
     //set audio file types
-    let audioFiles = ['Imp 3','Off 6','TN_20'];
+    let audioData;
     //set default language
     let language = localStorage.getItem("language") ? localStorage.getItem("language") : "espanol";
     //////////////function that allows topojson layers to be loaded///////////////////////
@@ -61,6 +61,7 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         pane:'shadowPane'
     })//.addTo(map);
+    getAudioClips();
     getColumbiaData();
     //create map buttons
     let info = L.control();
@@ -237,6 +238,17 @@
         //add layers to map
         layers.addTo(map)
     }
+    //fetch audio clip data
+    function getAudioClips(){
+        fetch("audio/audio_clips.csv")
+                .then(res => res.text())
+                .then(csv => {
+                    csv = Papa.parse(csv,{
+                        header:true
+                    }).data;
+                    audioData = csv;
+                })
+    }
     //fetch colombia data
     function getColumbiaData(){
         fetch("data/colombia_departments.json")
@@ -340,7 +352,7 @@
                 function createParticipantList(b){
                     let html = ""
 
-                    html += "<th class='city part-row'><a class='play-audio' id='" + b["Participation ID"] + "'>Audio</a>" + b["City"] + "</th>";
+                    html += "<tr class='participant' id='row_" + b["Participation ID"] + "'><th class='city part-row'><a class='play-audio' id='" + b["Participation ID"] + "'>Audio</a>" + b["City"] + "</th>";
                     html += "<th class='age part-row'>" + b["Age"] + "</th>";
                     html += "<th class='gender part-row'>" + b["Sex"] + "</th>";
                     html += "<th class='setting part-row'>" + b["Setting (rural vs urban)"] + "</th>";
@@ -350,10 +362,19 @@
                 }
                 //create audio elements
                 function createAudio(b){
-                    let id = b["Participation ID"];
-                    let filePath = "../audio/" + id + "/";
+                    let id = b["Participation ID"], clips = [];
+                    audioData.forEach(function(clip){
+                        if (id == clip["Participant"]){
+                            let filePath = "../audio/clips/IW - " + id + " " + clip["Clip"] + ".mp3";
+                            clips.push(filePath)
+                        }
+                    })
 
                     document.querySelector("#" + id).addEventListener("click",function(){    
+                        removeHighlight();
+                        //highlight selected row
+                        document.querySelector("#row_" + id).style.background = 'rgba(0,0,0,0.1)'
+
                         if (document.querySelector(".audio-table"))
                             document.querySelector(".audio-table").remove();
                         
@@ -361,13 +382,19 @@
                         document.querySelector(".audio-table").style.display = "block";
 
                         document.querySelector("#close-audio").addEventListener("click",function(elem){
+                            removeHighlight();
                             document.querySelector(".audio-table").innerHTML = "";
                             document.querySelector(".audio-table").style.display = "none";
                         })
 
-                        audioFiles.forEach(function(file){
-                            document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<audio controls type='audio/mpeg' src='" + filePath + file + " - " + id + ".mp3'>")
+                        clips.forEach(function(file){
+                            document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<audio controls type='audio/mpeg' src='" + file + "'>")
                         })
+                    })
+                }
+                function removeHighlight(){
+                    document.querySelectorAll(".participant").forEach(function(elem){
+                        elem.style.background = "white";
                     })
                 }
                 //restyle map on selected department
@@ -394,11 +421,11 @@
                 function filterParticipants(){
                     //get list element from the sidebar
                     //clear table
-                    document.querySelectorAll(".part-row").forEach(function(elem){
+                    document.querySelectorAll(".participant").forEach(function(elem){
                         elem.remove();
                     });
                     document.querySelectorAll("tbody").forEach(function(elem, i){
-                        if (i > 0)
+                        if (elem)
                             elem.remove();
                     });
                     if (document.querySelector("#none"))
@@ -412,7 +439,7 @@
                             (filters[4] == b["Occupation"] || filters[4] == 'all')&&
                             (filters[0] == b["Departments"] || filters[0] == 'all')){
                             current_participants++;
-                            html += createParticipantList(b);
+                            html = createParticipantList(b);
 
                             document.querySelector("#participants-table").insertAdjacentHTML("beforeend",html);
                             createAudio(b);

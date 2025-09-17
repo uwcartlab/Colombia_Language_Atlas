@@ -97,6 +97,9 @@ body, html{
     display:inline;
     padding-right:25px;
 }
+#to-map:hover{
+    cursor: pointer;
+}
 #to-map{
     padding:10px;
     font-size:20px;
@@ -112,6 +115,8 @@ body, html{
 }
 #intro-container{
     font-size:20px;
+    padding-left:10px;
+    padding-right: 10px;
 }
 /*database sidebar*/
 #sidebar{
@@ -348,10 +353,14 @@ label{
         height:50vh;
         background:white;
         display:none;
-        z-index:10000;
+        z-index:100000;
         overflow:scroll;
+        border-bottom:2px solid black;
     }
     .audio-table > *{
         padding-left:10px;
+    }
+    .audio-table > audio {
+        width: calc(100% - 20px)
     }
 }
