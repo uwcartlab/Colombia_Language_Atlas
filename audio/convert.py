@@ -25,9 +25,19 @@ with open('clips.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
                     quotechar='"', quoting=csv.QUOTE_MINIMAL)
     #create header row based on the GLO attributes
-    filewriter.writerow(["Participant","Audio","Clip"])
+    filewriter.writerow(["Province","Participant","Audio","Clip"])
     p = 'audio/clips'
     for e in os.scandir(p):
-        print(e.name)
-        filewriter.writerow([e.name,e.name,e.name]) 
+        temp = e.name.replace(" ","")
+        temp = temp.replace("-","")
+        temp = temp.replace("IW","")
+        temp = temp.replace(".wav.mp3","")
+        temp = temp.split("clip")
+        prov = temp[0][-2:]
+        print(prov)
+        try:
+            clip = "clip " + temp[1]
+            filewriter.writerow([prov,temp[0],e.name,("clip " + temp[1])]) 
+        except:
+             filewriter.writerow([prov,temp[0],e.name,("clip")]) 
 

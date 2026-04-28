@@ -240,7 +240,7 @@
     }
     //fetch audio clip data
     function getAudioClips(){
-        fetch("audio/audio_clips.csv")
+        fetch("audio/clips.csv")
                 .then(res => res.text())
                 .then(csv => {
                     csv = Papa.parse(csv,{
@@ -365,8 +365,7 @@
                     let id = b["Participation ID"], clips = [];
                     audioData.forEach(function(clip){
                         if (id == clip["Participant"]){
-                            let filePath = "../audio/clips/IW - " + id + " " + clip["Clip"] + ".mp3";
-                            clip.filePath = filePath
+                            clip.filePath = "./audio/clips/" + clip["Audio"]
                             clips.push(clip)
                         }
                     })
