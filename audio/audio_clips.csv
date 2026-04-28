@@ -1,4 +1,4 @@
-Participant,Audio,Clip,Time,Question or Context,Translation,Transcription in Spanish
+Participant,Audio,Clip,Time,question_s,question_e,Spanish
 P1BA,IWP1BA,clip 1,0.17,¿Has ido a alguna otra ciudad aquí en Colombia? ¿Ha dónde has ido?,Have you been to any other cities here in Colombia? Where have you been?,
 P1BA,IWP1BA,clip 2,0.27,¿Qué le dirías a un extranjero sobre Colombia?,What would you tell a foreigner about Colombia?,
 P2BA,IWP2BA,clip 1,0.12,¿Te colocaban otro tipo de castigo en casa por portarte mal?,Did you get any other kind of punishment at home for misbehaving?,

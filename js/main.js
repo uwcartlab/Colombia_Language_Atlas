@@ -38,15 +38,15 @@
     let popupContent;
     if (document.body.offsetWidth <= 768){
         if (language == "espanol")
-            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Toque para ver y filtrar la lista de participantes.<img id="upper-right" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Toque el mapa para cerrar.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Toque para ver y filtrar la lista de participantes.<img id="upper-right" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Toque el mapa para cerrar.</p>';
         if (language == "english")
-            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Tap to view and filter list of participants. <img id="upper-right" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department. <img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Tap map to close.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Tap to view and filter list of participants. <img id="upper-right" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department. <img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p id="close">Tap map to close.</p>';
     }
     else{
         if (language == "espanol")
-            popupContent = '<p>Utilice la tabla para filtrar la lista de participantes. <img width="25" id="right" class="invert-arrow" src="../img/icons/arrow.svg"></p><p>Haga clic en los departamentos en el mapa para ver los participantes de ese departamento. <img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p>';
+            popupContent = '<p>Utilice la tabla para filtrar la lista de participantes. <img width="25" id="right" class="invert-arrow" src="./img/icons/arrow.svg"></p><p>Haga clic en los departamentos en el mapa para ver los participantes de ese departamento. <img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p>';
         if (language == "english")
-            popupContent = '<p>Use table to filter list of participants. <img width="25" id="right" class="invert-arrow" src="../img/icons/arrow.svg"></p><p>Click departments on the map to view participants from that department.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p>';
+            popupContent = '<p>Use table to filter list of participants. <img width="25" id="right" class="invert-arrow" src="./img/icons/arrow.svg"></p><p>Click departments on the map to view participants from that department.<img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p>';
     }
 
     let popup = L.popup({className:"intro"})
@@ -67,7 +67,7 @@
     let info = L.control();
     info.onAdd = function(map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-        this._div.innerHTML = '<button id="reset-small-screen" class="reset" style="display:none"><img src="../img/icons/arrow.svg"></button><button id="table-button"><img src="../img/icons/person.svg"></button><button id="in"><a href="index.html"><img src="../img/icons/info.svg"></a></button>';
+        this._div.innerHTML = '<button id="reset-small-screen" class="reset" style="display:none"><img src="./img/icons/arrow.svg"></button><button id="table-button"><img src="./img/icons/person.svg"></button><button id="in"><a href="index.html"><img src="./img/icons/info.svg"></a></button>';
         return this._div;
     };
     info.addTo(map)
@@ -366,7 +366,8 @@
                     audioData.forEach(function(clip){
                         if (id == clip["Participant"]){
                             let filePath = "../audio/clips/IW - " + id + " " + clip["Clip"] + ".mp3";
-                            clips.push(filePath)
+                            clip.filePath = filePath
+                            clips.push(clip)
                         }
                     })
 
@@ -378,7 +379,8 @@
                         if (document.querySelector(".audio-table"))
                             document.querySelector(".audio-table").remove();
                         
-                        document.querySelector("body").insertAdjacentHTML("afterbegin","<div class='audio-table'><h2 id='participant'>" + id + "<button id='close-audio'><img src='../img/icons/arrow.svg'></button></h2></div")
+                        document.querySelector("body").insertAdjacentHTML("afterbegin","<div class='audio-table'><h2 id='participant'>" + id + "<button id='close-audio'><img src='./img/icons/arrow.svg'></button></h2></div")
+                        document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<p class='audio-transcript'>" + b["Age"] + ", " + b["Sex"] + ", " + b["Occupation"] + "</p>")
                         document.querySelector(".audio-table").style.display = "block";
 
                         document.querySelector("#close-audio").addEventListener("click",function(elem){
@@ -387,8 +389,13 @@
                             document.querySelector(".audio-table").style.display = "none";
                         })
 
-                        clips.forEach(function(file){
-                            document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<audio controls type='audio/mpeg' src='" + file + "'>")
+                        clips.forEach(function(clip){
+                            if (language == "espanol")
+                                document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<p class='audio-transcript'>" + clip.question_s + "</p>")
+                            if (language == "english")
+                                document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<p class='audio-transcript'>" + clip.question_e + "</p>")
+
+                            document.querySelector(".audio-table").insertAdjacentHTML("beforeend","<audio controls type='audio/mpeg' src='" + clip.filePath + "'>")
                         })
                     })
                 }
@@ -402,7 +409,7 @@
                     let bounds = layer.getBounds();
                     //add reset button
                     document.querySelector("#reset-small-screen").style.display = 'inline';
-                    //document.querySelector("#reset-small-screen").addEventListener("click",resetButton)
+                    document.querySelector("#reset-small-screen").addEventListener("click",resetButton)
                     //center map on selected department
                     map.fitBounds(bounds)
                     //if on mobile, activate table view
@@ -425,7 +432,7 @@
                         elem.remove();
                     });
                     document.querySelectorAll("tbody").forEach(function(elem, i){
-                        if (elem)
+                        if (elem && !elem.firstChild)
                             elem.remove();
                     });
                     if (document.querySelector("#none"))

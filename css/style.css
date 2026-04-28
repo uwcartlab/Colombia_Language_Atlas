@@ -195,6 +195,10 @@ label{
 #close-audio img{
     rotate: 270deg;
 }
+.audio-transcript{
+    font-weight:light !important;
+    margin-bottom:0;
+}
 /*map view*/
 #map{
     height:calc(100vh - 75px);
@@ -350,7 +354,7 @@ label{
         padding:0;
         border:none;
         width:100%;
-        height:50vh;
+        height:100vh;
         background:white;
         display:none;
         z-index:100000;
