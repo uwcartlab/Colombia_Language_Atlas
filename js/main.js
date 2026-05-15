@@ -6,7 +6,10 @@
     //set audio file types
     let audioData;
     //set default language
-    let language = localStorage.getItem("language") ? localStorage.getItem("language") : "espanol";
+    let language = localStorage.getItem("language") ? localStorage.getItem("language") : "espanol",
+        unusedLanguage = language == "espanol" ? "english" : "espanol";
+    //background layers
+    let layers;
     //////////////function that allows topojson layers to be loaded///////////////////////
 	L.TopoJSON = L.GeoJSON.extend({  
         addData: function(jsonData) {    
@@ -46,7 +49,7 @@
         if (language == "espanol")
             popupContent = '<p>Utilice la tabla para filtrar la lista de participantes. <img width="25" id="right" class="invert-arrow" src="./img/icons/arrow.svg"></p><p>Haga clic en los departamentos en el mapa para ver los participantes de ese departamento. <img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p>';
         if (language == "english")
-            popupContent = '<p>Use table to filter list of participants. <img width="25" id="right" class="invert-arrow" src="./img/icons/arrow.svg"></p><p>Click departments on the map to view participants from that department.<img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p>';
+            popupContent = '<p>Use table to filter list of participants. <img width="25" id="right" class="invert-arrow" src="./img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department.<img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p>';
     }
 
     let popup = L.popup({className:"intro"})
@@ -63,6 +66,15 @@
     })//.addTo(map);
     getAudioClips();
     getColumbiaData();
+    //set language 
+    document.querySelectorAll("." + language).forEach(function(elem){
+        elem.style.display = 'block';
+        if (elem.nodeName == 'OPTION')
+            elem.selected = true
+    })
+    document.querySelectorAll("." + unusedLanguage).forEach(function(elem){
+        elem.style.display = 'none';
+    })
     //create map buttons
     let info = L.control();
     info.onAdd = function(map) {
@@ -127,7 +139,7 @@
                 dataLayer:"country_labels",
                 symbolizer: new protomapsL.CenteredTextSymbolizer({
                         labelProps:["name"],
-                        font: "12px karrik",
+                        font: "12px Arial, Helvetica, sans-serif",
                         fill:"#737373",
                         stroke:"#ffffff",
                         width:0.5,
@@ -154,10 +166,10 @@
                 dataLayer:"colombia_cities",
                 symbolizer: new protomapsL.OffsetTextSymbolizer({
                         labelProps:["name"],
-                        font: "14px karrik",
+                        font: "700 12px Arial, Helvetica, sans-serif",
                         fill:cityFilter,
                         stroke:"#ffffff",
-                        width:widthFilter,
+                        width:0,
                         offsetY:-4,
                         lineHeight:1.5
                     })
@@ -173,9 +185,9 @@
         //font filter
         function departmentFontFilter(x,d){
             if (departments.includes(d.props.name))
-                return "14px karrik"
+                return "700 14px Arial, Helvetica, sans-serif"
             else    
-                return "12px karrik"
+                return "12px Arial, Helvetica, sans-serif"
         }
         //department stroke
         function departmentStrokeFilter(x,d){
@@ -229,7 +241,7 @@
         //url for background data files
         let url = "data/background_data.pmtiles";
         //protomaps layers    
-        let layers = protomapsL.leafletLayer({
+        layers = protomapsL.leafletLayer({
                 url: url,
                 paintRules:PAINT_RULES,
                 labelRules:LABEL_RULES,
@@ -364,6 +376,7 @@
                 function createAudio(b){
                     let id = b["Participation ID"], clips = [];
                     audioData.forEach(function(clip){
+                        
                         if (id == clip["Participant"]){
                             clip.filePath = "./audio/clips/" + clip["Audio"]
                             clips.push(clip)
@@ -516,6 +529,7 @@
                 function resetStyle(feature){
                     let currentFilter = false;
 
+                    layers.rerenderTiles();
                     feature.properties.participants.forEach(function(b){
                         if((filters[2] == b["Sex"] || filters[2] == 'all')&&
                         (filters[1] == b["Age"] || filters[1] == 'all')&&

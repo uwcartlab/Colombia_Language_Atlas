@@ -1,18 +1,8 @@
-
-@font-face {
-    font-family: karrik;
-    src: url(fonts/Karrik-Regular.woff2);
-}
-@font-face {
-    font-family: karrik;
-    src: url(fonts/Karrik-Italic.woff2);
-    font-style: italic;
-}
 /*project stylesheet*/
 body, html{
     margin:0;
     background:white;
-    font-family: karrik;
+    font-family: Arial, Helvetica, sans-serif;
 }
 /*language buttons*/
 .english{
@@ -88,7 +78,11 @@ body, html{
     border: black 2px solid;    
     padding:10px;
     font-size:16px;
-}   
+}
+#credits{
+    font-style: italic;
+
+}
 .active{
     background:lightgray !important;
     font-weight: bold;
@@ -117,6 +111,19 @@ body, html{
     font-size:20px;
     padding-left:10px;
     padding-right: 10px;
+}
+footer{
+    margin-top:50px;
+    border-top:2px solid black;
+    position:relative;
+    width:100vw;
+    bottom:0;
+}
+footer img{
+    width:200px;
+    padding-top:20px;
+    display:block;
+    margin:auto;
 }
 /*database sidebar*/
 #sidebar{
@@ -187,7 +194,7 @@ label{
   color: black;
   font-size: 24px;
   border: lightgray 2px solid;
-  font-family: karrik;
+  font-family: Arial, Helvetica, sans-serif;
   width: 40px;
   border: none;
   float:right;
@@ -228,7 +235,7 @@ label{
 .leaflet-control-attribution{
     background:black !important;
     color:white !important;
-    font-family: karrik;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .leaflet-control-attribution a{
     color:white !important;
@@ -240,7 +247,7 @@ label{
     color:black;
     font-size:24px;
     border:lightgray 2px solid;
-    font-family: karrik;
+    font-family: Arial, Helvetica, sans-serif;
     width:40px;
     border:none;
 }
@@ -251,7 +258,7 @@ label{
 .intro .leaflet-popup-content-wrapper{
    border:2px black solid;
    font-size:18px;
-   font-family:karrik;
+   font-family: Arial, Helvetica, sans-serif;
    width:280px;
 }
 .leaflet-popup-content {
@@ -293,6 +300,14 @@ label{
     }
     #participants-table{
         width:100%;
+    }
+    footer{
+        padding-left:20px;
+    }
+    footer p {
+        padding-top:25px;
+        width:50%;
+        margin:auto;
     }
 }
 @media screen and (max-width: 768px) {
@@ -346,6 +361,10 @@ label{
     th{
         max-width:75px;
     }
+    .city{
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
     .audio-table{
         position:absolute;
         top:0;
@@ -366,5 +385,9 @@ label{
     }
     .audio-table > audio {
         width: calc(100% - 20px)
+    }
+    footer p {
+        padding:10px 10px 0 10px;
+        margin:auto;
     }
 }

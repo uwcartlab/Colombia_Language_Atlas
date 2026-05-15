@@ -1,7 +1,21 @@
 (function(){
-    let language = "espanol";
+    if (!localStorage.getItem("language"))
+        var language = "espanol"; 
+    else
+        var language = localStorage.getItem("language"); 
+    
+    var unusedLanguage = language == "espanol" ? "english" : "espanol";
 
     localStorage.setItem("language", language);
+    document.querySelector("#" + language).classList.add("active")
+
+    //set language 
+    document.querySelectorAll("." + language).forEach(function(elem){
+        elem.style.display = 'block';
+    })
+    document.querySelectorAll("." + unusedLanguage).forEach(function(elem){
+        elem.style.display = 'none';
+    })
     //select language
     document.querySelectorAll(".language").forEach(function(elem, i){
         elem.addEventListener("click",function(){
