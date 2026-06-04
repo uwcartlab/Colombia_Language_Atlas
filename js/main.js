@@ -41,9 +41,9 @@
     let popupContent;
     if (document.body.offsetWidth <= 768){
         if (language == "espanol")
-            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Toque para ver y filtrar la lista de participantes.<img id="upper-right" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Toque el mapa para cerrar.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Toque para ver y filtrar la lista de participantes.<img id="upper-right" width="25" src="./img/icons/arrow.svg"></p><p>Toque los departamentos en el mapa para ver los participantes de ese departamento.<img id="down" class="invert-arrow" width="25" src="../img/icons/arrow.svg"></p><p id="close">Toque el mapa para cerrar.</p>';
         if (language == "english")
-            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Tap to view and filter list of participants. <img id="upper-right" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department. <img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p id="close">Tap map to close.</p>';
+            popupContent = '<p><img width="20" src="../img/icons/person.svg"> Tap to view and filter list of participants. <img id="upper-right" width="25" src="./img/icons/arrow.svg"></p><p>Tap departments on the map to view participants from that department. <img id="down" class="invert-arrow" width="25" src="./img/icons/arrow.svg"></p><p id="close">Tap map to close.</p>';
     }
     else{
         if (language == "espanol")

@@ -267,9 +267,6 @@ label{
 .leaflet-popup-tip{
     background:black;
 }
-.invert-arrow{
-    filter: invert(1);
-}
 #upper-right{
     rotate:120deg;
 }
