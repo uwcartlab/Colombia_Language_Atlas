@@ -251,7 +251,7 @@ label{
     width:40px;
     border:none;
 }
-.info button>img{
+.info button>img, #info-button{
     width:100%;
 }
 /*intro popup*/
