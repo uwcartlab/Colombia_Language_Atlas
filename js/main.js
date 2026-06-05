@@ -279,6 +279,8 @@
                 }).data;
                 //create filter arrays
                 let occupations = [], genders = [], ages = [], settings = [];
+                //create list values based on language
+                let ageField = language == 'espanol' ? "Age (esp)":"Age", settingField = language == 'espanol' ? "Setting (esp)" : "Setting (rural vs urban)", occupationField = language == 'espanol' ? "Occupation (esp)" : "Occupation" 
                 //create colombia geojson
                 let colombia = new L.TopoJSON(data,{
                     style:function(feature){
@@ -293,14 +295,14 @@
                                 if (!genders.includes(c.Sex))
                                     genders.push(c.Sex)
                                 //age array
-                                if (!ages.includes(c.Age))
-                                    ages.push(c.Age)
+                                if (!ages.includes(c[ageField]))
+                                    ages.push(c[ageField])
                                 //setting array
-                                if (!settings.includes(c["Setting (rural vs urban)"]))
-                                    settings.push(c["Setting (rural vs urban)"])
+                                if (!settings.includes(c[settingField]))
+                                    settings.push(c[settingField])
                                 //occupation array
-                                if (!occupations.includes(c.Occupation))
-                                    occupations.push(c.Occupation)
+                                if (!occupations.includes(c[occupationField]))
+                                    occupations.push(c[occupationField])
                                 //populate participants list based on selected department
                                 participants.push(c)
                                 total_participants.push(c)
@@ -365,10 +367,10 @@
                     let html = ""
 
                     html += "<tr class='participant' id='row_" + b["Participation ID"] + "'><th class='city part-row'><a class='play-audio' id='" + b["Participation ID"] + "'>Audio</a>" + b["City"] + "</th>";
-                    html += "<th class='age part-row'>" + b["Age"] + "</th>";
+                    html += "<th class='age part-row'>" + b[ageField] + "</th>";
                     html += "<th class='gender part-row'>" + b["Sex"] + "</th>";
-                    html += "<th class='setting part-row'>" + b["Setting (rural vs urban)"] + "</th>";
-                    html += "<th class='occupation part-row'>" + b["Occupation"] + "</th></tr>";
+                    html += "<th class='setting part-row'>" + b[settingField] + "</th>";
+                    html += "<th class='occupation part-row'>" + b[occupationField] + "</th></tr>";
 
                     return html;
                 }
