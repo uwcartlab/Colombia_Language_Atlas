@@ -344,6 +344,7 @@
                 })
                 //create age list
                 ages.forEach(function(elem){
+                    console.log(elem)
                     let item =  "<option value='" + elem + "' label='" + elem.charAt(0).toUpperCase() + elem.slice(1) + "'></option>";
                     document.querySelector("#age").insertAdjacentHTML("beforeend",item)
                 })
@@ -455,9 +456,9 @@
                     let html = "", current_participants = 0;
                     total_participants.forEach(function(b){
                         if((filters[2] == b["Sex"] || filters[2] == 'all')&&
-                            (filters[1] == b["Age"] || filters[1] == 'all')&&
-                            (filters[3] == b["Setting (rural vs urban)"] || filters[3] == 'all')&&
-                            (filters[4] == b["Occupation"] || filters[4] == 'all')&&
+                            (filters[1] == b[ageField] || filters[1] == 'all')&&
+                            (filters[3] == b[settingField] || filters[3] == 'all')&&
+                            (filters[4] == b[occupationField] || filters[4] == 'all')&&
                             (filters[0] == b["Departments"] || filters[0] == 'all')){
                             current_participants++;
                             html = createParticipantList(b);
